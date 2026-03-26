@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,18 +16,28 @@ public class GameManager : MonoBehaviour
     public int currentWeekend = 1;
     public int maxWeekends = 10;
 
+    [Header("Stan Gry")]
+    public bool isGameOver = false;
+
     // Zdarzenia (Events), do których podepnie siê UI
     public event Action OnResourceChanged;
     public event Action<string> OnGameMessage; // Do wysy³ania komunikatów (np. "Brak kasy!")
+    public event Action<bool> OnGameOver;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else Destroy(gameObject);
     }
 
-    private void Start()
+    private System.Collections.IEnumerator Start()
     {
+        yield return null;
+
         StartNewWeekend();
     }
 
@@ -57,16 +68,31 @@ public class GameManager : MonoBehaviour
 
     public void EndWeekend()
     {
-        currentWeekend++;
-
-        if (currentWeekend > maxWeekends)
+        if (currentWeekend >= maxWeekends)
         {
-            // Tutaj w przysz³oœci odpalimy ekran koñcowy
-            OnGameMessage?.Invoke("Koniec lata! Zobaczmy, czy masz konsolê...");
+            // Koniec czasu! Sprawdzamy czy nas staæ.
+            TriggerEndgame(currentTickets >= consoleCost);
         }
         else
         {
+            currentWeekend++;
             StartNewWeekend();
         }
+    }
+
+    public void TriggerEndgame(bool isWin)
+    {
+        isGameOver = true;
+        OnGameOver?.Invoke(isWin);
+    }
+    public void RestartGame()
+    {
+       
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    // Publiczna funkcja, której inne skrypty mog¹ u¿ywaæ do wysy³ania tekstu na ekran
+    public void BroadcastMessage(string msg)
+    {
+        OnGameMessage?.Invoke(msg);
     }
 }

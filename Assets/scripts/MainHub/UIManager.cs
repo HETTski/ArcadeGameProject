@@ -1,17 +1,24 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Referencje UI")]
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI ticketsText;
     public TextMeshProUGUI weekendText;
-    public TextMeshProUGUI messageText; // Np. na œrodku ekranu na komunikaty
-    public TextMeshProUGUI interactionPromptText; // Tekst "Wciœnij E, aby..."
+    public TextMeshProUGUI messageText;
+    public TextMeshProUGUI interactionPromptText;
+
+    [Header("Ustawienia")]
+    [Tooltip("Ile sekund g³ówny komunikat ma wisieæ na ekranie?")]
+    public float messageDuration = 3f; 
+
+    private Coroutine messageCoroutine;
 
     private void Start()
     {
-        // Podpinamy siê pod zdarzenia z GameManagera
         GameManager.Instance.OnResourceChanged += UpdateUI;
         GameManager.Instance.OnGameMessage += ShowMessage;
 
@@ -21,7 +28,6 @@ public class UIManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Zawsze odpinamy zdarzenia, ¿eby unikn¹æ wycieków pamiêci
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnResourceChanged -= UpdateUI;
@@ -38,8 +44,29 @@ public class UIManager : MonoBehaviour
 
     private void ShowMessage(string msg)
     {
-        if (messageText != null) messageText.text = msg;
+        if (messageText != null)
+        {
+            messageText.text = msg;
+
+            if (messageCoroutine != null)
+            {
+                StopCoroutine(messageCoroutine);
+            }
+
+            // Zmieniliœmy sztywne 3f na Twoj¹ now¹ zmienn¹!
+            messageCoroutine = StartCoroutine(HideMessageAfterDelay(messageDuration));
+        }
         Debug.Log(msg);
+    }
+
+    private IEnumerator HideMessageAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (messageText != null)
+        {
+            messageText.text = "";
+        }
     }
 
     public void ShowInteractionPrompt(string prompt)

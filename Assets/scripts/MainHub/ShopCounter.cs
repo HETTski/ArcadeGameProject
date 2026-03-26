@@ -4,16 +4,16 @@ public class ShopCounter : MonoBehaviour, IInteractable
 {
     public void Interact()
     {
-        int cost = GameManager.Instance.consoleCost;
-        if (GameManager.Instance.currentTickets >= cost)
+        if (GameManager.Instance.currentTickets >= GameManager.Instance.consoleCost)
         {
-            Debug.Log("ZWYCIÊSTWO! Kupi³eœ wymarzon¹ konsolê!");
-            // W przysz³oœci: LoadScene("WinScreen");
+            // Odpalamy zwyciêstwo!
+            GameManager.Instance.TriggerEndgame(true);
         }
         else
         {
-            int missing = cost - GameManager.Instance.currentTickets;
-            Debug.Log($"Brakuje ci {missing} biletów do konsoli.");
+            int missing = GameManager.Instance.consoleCost - GameManager.Instance.currentTickets;
+            // U¿ywamy nowej, bezpiecznej metody z GameManagera!
+            GameManager.Instance.BroadcastMessage($"Brakuje ci {missing} biletów do konsoli.");
         }
     }
 

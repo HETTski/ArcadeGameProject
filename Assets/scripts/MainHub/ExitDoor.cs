@@ -1,16 +1,14 @@
 using UnityEngine;
 
-public class ExitDoor : MonoBehaviour
+public class ExitDoor : MonoBehaviour, IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Interact()
     {
-        
+        GameManager.Instance.EndWeekend();
     }
 
-    // Update is called once per frame
-    void Update()
+    public string GetPromptText()
     {
-        
+        return "Wróæ do domu (Zakoñcz weekend)";
     }
 }
