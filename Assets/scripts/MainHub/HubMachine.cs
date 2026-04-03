@@ -1,11 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Niezbêdne do zmiany scen!
+using UnityEngine.SceneManagement; 
 
 public class HubMachine : MonoBehaviour, IInteractable
 {
     public string machineName = "Space Invaders";
     public int playCost = 2;
-    public string sceneToLoad = "Minigame_SpaceInvaders"; // Nazwa sceny, któr¹ chcemy wczytaæ
+    public string sceneToLoad = "Minigame_SpaceInvaders"; // Nazwa sceny, ktÃ³rÄ… chcemy wczytaï¿½
 
     public void Interact()
     {
@@ -13,15 +13,15 @@ public class HubMachine : MonoBehaviour, IInteractable
         {
             GameManager.Instance.SpendMoney(playCost);
 
-            // Wysy³amy komunikat i ³adujemy scenê!
-            GameManager.Instance.BroadcastMessage($"£adowanie gry: {machineName}...");
+            // WysyÅ‚amy komunikat i Å‚adujemy scenÄ™!
+            GameManager.Instance.BroadcastMessage($"Åadowanie gry: {machineName}...");
 
             // Wczytanie nowej sceny po nazwie
             SceneManager.LoadScene(sceneToLoad);
         }
         else
         {
-            GameManager.Instance.BroadcastMessage("Nie staæ ciê na tê grê!");
+            GameManager.Instance.BroadcastMessage("Nie staÄ‡ ciÄ™ na tÄ… grÄ™!");
         }
     }
 

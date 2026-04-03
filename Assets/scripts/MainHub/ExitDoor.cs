@@ -9,6 +9,6 @@ public class ExitDoor : MonoBehaviour, IInteractable
 
     public string GetPromptText()
     {
-        return "Wróæ do domu (Zakoñcz weekend)";
+        return "WrÃ³Ä‡ do domu (ZakoÅ„cz weekend)";
     }
 }

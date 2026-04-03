@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI interactionPromptText;
 
     [Header("Ustawienia")]
-    [Tooltip("Ile sekund g³ówny komunikat ma wisieæ na ekranie?")]
+    [Tooltip("Ile sekund gÅ‚Ã³wny komunikat ma wisieÄ‡ na ekranie?")]
     public float messageDuration = 3f; 
 
     private Coroutine messageCoroutine;
@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour
                 StopCoroutine(messageCoroutine);
             }
 
-            // Zmieniliœmy sztywne 3f na Twoj¹ now¹ zmienn¹!
+            
             messageCoroutine = StartCoroutine(HideMessageAfterDelay(messageDuration));
         }
         Debug.Log(msg);
