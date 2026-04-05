@@ -456,7 +456,9 @@ Transform:
   m_LocalPosition: {x: -172.24115, y: 1227.9583, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1948294884}
+  - {fileID: 1938363156}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &220172481
@@ -1876,6 +1878,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HubMachine
   machineName: Space Invaders
   playCost: 2
+  sceneToLoad: SpaceShooter
 --- !u!1 &1938363154
 GameObject:
   m_ObjectHideFlags: 0
@@ -1963,12 +1966,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1938363154}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 172.24115, y: -1227.9583, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 220172480}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1938363157
 MonoBehaviour:
@@ -2158,7 +2161,7 @@ RectTransform:
   - {fileID: 1072384898}
   - {fileID: 1400622118}
   - {fileID: 1992830816}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 220172480}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2266,9 +2269,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 27080324}
   - {fileID: 220172480}
-  - {fileID: 1948294884}
   - {fileID: 89580891}
-  - {fileID: 1938363156}
   - {fileID: 1594127427}
   - {fileID: 1488889061}
   - {fileID: 1234208766}
