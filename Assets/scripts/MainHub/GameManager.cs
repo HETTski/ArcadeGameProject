@@ -6,6 +6,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [Header("Referencje do ukrywania")]
+    public GameObject hubPlayer; // Przeci¹gnij tu swój obiekt Player (chodz¹cy)
+    public GameObject hubUI;     // Przeci¹gnij tu swój Canvas (lub panel z biletami)
+
     [Header("Ekonomia")]
     public int currentMoney;
     public int currentTickets;
@@ -30,6 +34,8 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else Destroy(gameObject);
     }
@@ -94,5 +100,28 @@ public class GameManager : MonoBehaviour
     public void BroadcastMessage(string msg)
     {
         OnGameMessage?.Invoke(msg);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainHub")
+        {
+            
+            if (hubPlayer != null) hubPlayer.SetActive(true);
+            if (hubUI != null) hubUI.SetActive(true);
+        }
+        else
+        {
+          
+            if (hubPlayer != null) hubPlayer.SetActive(false);
+            if (hubUI != null) hubUI.SetActive(false);
+
+        }
+    }
+
+    private void OnDestroy()
+    {
+        
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
