@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        // Obs≥uga interakcji
+        // Obs≈Çuga interakcji
         if (currentInteractable != null && Input.GetKeyDown(KeyCode.E))
         {
             currentInteractable.Interact();

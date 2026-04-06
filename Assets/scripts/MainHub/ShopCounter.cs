@@ -6,19 +6,19 @@ public class ShopCounter : MonoBehaviour, IInteractable
     {
         if (GameManager.Instance.currentTickets >= GameManager.Instance.consoleCost)
         {
-            // Odpalamy zwyciêstwo!
+            // Odpalamy zwyciÄ™stwo!
             GameManager.Instance.TriggerEndgame(true);
         }
         else
         {
             int missing = GameManager.Instance.consoleCost - GameManager.Instance.currentTickets;
-            // U¿ywamy nowej, bezpiecznej metody z GameManagera!
-            GameManager.Instance.BroadcastMessage($"Brakuje ci {missing} biletów do konsoli.");
+            // UÅ¼ywamy nowej, bezpiecznej metody z GameManagera!
+            GameManager.Instance.BroadcastMessage($"Brakuje ci {missing} biletÃ³w do konsoli.");
         }
     }
 
     public string GetPromptText()
     {
-        return $"Sklep z nagrodami (Konsola: {GameManager.Instance.consoleCost} biletów)";
+        return $"Sklep z nagrodami (Konsola: {GameManager.Instance.consoleCost} biletÃ³w)";
     }
 }

@@ -1,6 +1,6 @@
-// To nie jest MonoBehaviour! To kontrakt dla innych skryptów.
+// To nie jest MonoBehaviour! To kontrakt dla innych skryptÃ³w.
 public interface IInteractable
 {
     void Interact();
-    string GetPromptText(); // Tekst, który wyœwietli siê nad obiektem (np. "Graj za $2", "Sklep")
+    string GetPromptText(); // Tekst, ktÃ³ry wyÅ›wietli siÄ™ nad obiektem (np. "Graj za $2", "Sklep")
 }

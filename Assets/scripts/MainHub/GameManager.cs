@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     [Header("Ekonomia")]
     public int currentMoney;
     public int currentTickets;
-    public int allowancePerWeekend = 20; // Ile kieszonkowego dostajemy co tydzieñ
+    public int allowancePerWeekend = 20; // Ile kieszonkowego dostajemy co tydzieÅ„
     public int consoleCost = 5000;       // Cel gry
 
     [Header("System Czasu")]
@@ -24,9 +24,9 @@ public class GameManager : MonoBehaviour
     [Header("Stan Gry")]
     public bool isGameOver = false;
 
-    // Zdarzenia (Events), do których podepnie siê UI
+    // Zdarzenia (Events), do ktÃ³rych podepnie siÄ™ UI
     public event Action OnResourceChanged;
-    public event Action<string> OnGameMessage; // Do wysy³ania komunikatów (np. "Brak kasy!")
+    public event Action<string> OnGameMessage; // Do wysyÅ‚ania komunikatÃ³w (np. "Brak kasy!")
     public event Action<bool> OnGameOver;
 
     private void Awake()
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     {
         currentMoney = allowancePerWeekend;
         OnResourceChanged?.Invoke();
-        OnGameMessage?.Invoke($"Rozpoczêto weekend {currentWeekend} / {maxWeekends}!");
+        OnGameMessage?.Invoke($"RozpoczÄ™to weekend {currentWeekend} / {maxWeekends}!");
     }
 
     public void SpendMoney(int amount)
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
         currentMoney -= amount;
         OnResourceChanged?.Invoke();
 
-        // Jeœli skoñczy³y nam siê pieni¹dze na zero, automatycznie koñczymy weekend
+        // JeÅ›li skoÅ„czyÅ‚y nam siÄ™ pieniÄ…dze na zero, automatycznie koÅ„czymy weekend
         if (currentMoney <= 0)
         {
             EndWeekend();
@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentWeekend >= maxWeekends)
         {
-            // Koniec czasu! Sprawdzamy czy nas staæ.
+            // Koniec czasu! Sprawdzamy czy nas staÄ‡.
             TriggerEndgame(currentTickets >= consoleCost);
         }
         else
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
         // 3. £adujemy od nowa Hub
         SceneManager.LoadScene("MainHub");
     }
-    // Publiczna funkcja, której inne skrypty mog¹ u¿ywaæ do wysy³ania tekstu na ekran
+    // Publiczna funkcja, ktÃ³rej inne skrypty mogÅ‚ uÅ¼ywaÄ‡ do wysyÅ‚ania tekstu na ekran
     public void BroadcastMessage(string msg)
     {
         OnGameMessage?.Invoke(msg);
