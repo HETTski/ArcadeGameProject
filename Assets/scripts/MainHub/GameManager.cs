@@ -6,6 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [Header("Referencje do ukrywania")]
+    public GameObject hubPlayer; 
+    public GameObject hubUI;     
+    public GameObject endgamePanel;
+
     [Header("Ekonomia")]
     public int currentMoney;
     public int currentTickets;
@@ -30,6 +35,8 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else Destroy(gameObject);
     }
@@ -82,17 +89,64 @@ public class GameManager : MonoBehaviour
 
     public void TriggerEndgame(bool isWin)
     {
+        if (isGameOver) return; // Zabezpieczenie
+
         isGameOver = true;
+
+        // Odpalamy event, ktÛrego s≥ucha UIManager
         OnGameOver?.Invoke(isWin);
     }
     public void RestartGame()
     {
-       
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // 1. Resetujemy wartoúci do poczπtkowych
+        currentMoney = 20; // Wpisz tu swojπ kwotÍ startowπ
+        currentTickets = 0;
+        currentWeekend = 1;
+        isGameOver = false;
+
+        // 2. Aktualizujemy UI
+        OnResourceChanged?.Invoke();
+
+        endgamePanel.SetActive(false);
+
+        // 3. £adujemy od nowa Hub
+        SceneManager.LoadScene("MainHub");
     }
     // Publiczna funkcja, kt√≥rej inne skrypty mog≈Ç u≈ºywaƒá do wysy≈Çania tekstu na ekran
     public void BroadcastMessage(string msg)
     {
         OnGameMessage?.Invoke(msg);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainHub")
+        {
+            // W≥πczamy gracza (jeúli istnieje)
+            if (hubPlayer != null)
+            {
+                hubPlayer.SetActive(true);
+            }
+
+            // W≥πczamy UI i od razu czyúcimy wiadomoúci (w jednym bloku if!)
+            if (hubUI != null)
+            {
+                hubUI.SetActive(true);
+                hubUI.GetComponent<UIManager>().ClearMessage();
+            }
+        }
+        else
+        {
+            // Wy≥πczamy gracza i UI w minigrach
+            if (hubPlayer != null) hubPlayer.SetActive(false);
+            if (hubUI != null) hubUI.SetActive(false);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
