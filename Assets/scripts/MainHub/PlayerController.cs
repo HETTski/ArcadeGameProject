@@ -29,6 +29,10 @@ public class PlayerController : MonoBehaviour
         {
             currentInteractable.Interact();
         }
+        if (GameManager.Instance != null && GameManager.Instance.isGameOver)
+        {
+            return;
+        }
     }
 
     private void FixedUpdate()

@@ -24,6 +24,11 @@ public class Asteroid : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
+        if (MinigameManager.Instance != null)
+        {
+            MinigameManager.Instance.RegisterAsteroid();
+        }
+
         // Losujemy kierunek i siłę obrotu na samym starcie
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
         rb.linearVelocity = randomDirection * speed;
@@ -66,7 +71,11 @@ public class Asteroid : MonoBehaviour
                 }
             }
 
-            
+            if (MinigameManager.Instance != null)
+            {
+                MinigameManager.Instance.UnregisterAsteroid();
+            }
+
             Destroy(gameObject);
         }
     }

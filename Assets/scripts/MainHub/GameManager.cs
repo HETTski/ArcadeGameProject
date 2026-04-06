@@ -7,8 +7,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [Header("Referencje do ukrywania")]
-    public GameObject hubPlayer; // Przeci¹gnij tu swój obiekt Player (chodz¹cy)
-    public GameObject hubUI;     // Przeci¹gnij tu swój Canvas (lub panel z biletami)
+    public GameObject hubPlayer; 
+    public GameObject hubUI;     
+    public GameObject endgamePanel;
 
     [Header("Ekonomia")]
     public int currentMoney;
@@ -88,13 +89,29 @@ public class GameManager : MonoBehaviour
 
     public void TriggerEndgame(bool isWin)
     {
+        if (isGameOver) return; // Zabezpieczenie
+
         isGameOver = true;
+
+        // Odpalamy event, którego s³ucha UIManager
         OnGameOver?.Invoke(isWin);
     }
     public void RestartGame()
     {
-       
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        // 1. Resetujemy wartoœci do pocz¹tkowych
+        currentMoney = 20; // Wpisz tu swoj¹ kwotê startow¹
+        currentTickets = 0;
+        currentWeekend = 1;
+        isGameOver = false;
+
+        // 2. Aktualizujemy UI
+        OnResourceChanged?.Invoke();
+
+        endgamePanel.SetActive(false);
+
+        // 3. £adujemy od nowa Hub
+        SceneManager.LoadScene("MainHub");
     }
     // Publiczna funkcja, której inne skrypty mog¹ u¿ywaæ do wysy³ania tekstu na ekran
     public void BroadcastMessage(string msg)
@@ -106,16 +123,24 @@ public class GameManager : MonoBehaviour
     {
         if (scene.name == "MainHub")
         {
-            
-            if (hubPlayer != null) hubPlayer.SetActive(true);
-            if (hubUI != null) hubUI.SetActive(true);
+            // W³¹czamy gracza (jeœli istnieje)
+            if (hubPlayer != null)
+            {
+                hubPlayer.SetActive(true);
+            }
+
+            // W³¹czamy UI i od razu czyœcimy wiadomoœci (w jednym bloku if!)
+            if (hubUI != null)
+            {
+                hubUI.SetActive(true);
+                hubUI.GetComponent<UIManager>().ClearMessage();
+            }
         }
         else
         {
-          
+            // Wy³¹czamy gracza i UI w minigrach
             if (hubPlayer != null) hubPlayer.SetActive(false);
             if (hubUI != null) hubUI.SetActive(false);
-
         }
     }
 

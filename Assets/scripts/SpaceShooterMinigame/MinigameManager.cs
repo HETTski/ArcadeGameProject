@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class MinigameManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class MinigameManager : MonoBehaviour
     public TextMeshProUGUI resultText;
 
     private bool isGameOver = false;
+
+    private int asteroidCount = 0;
 
     public void Awake()
     {
@@ -33,12 +36,32 @@ public class MinigameManager : MonoBehaviour
         
     }
 
+    public void RegisterAsteroid()
+    {
+        asteroidCount++;
+    }
+
+    public void UnregisterAsteroid()
+    {
+        asteroidCount--;
+
+        // Jeœli to by³a ostatnia asteroida i gracz jeszcze ¿yje...
+        if (asteroidCount <= 0 && !isGameOver)
+        {
+            TriggerWin();
+        }
+    }
+
     public void TriggerGameOver()
     {
+        if (isGameOver) return;
         isGameOver = true;
 
         if (gameOverPanel != null)
+        {
             gameOverPanel.SetActive(true);
+            gameOverPanel.GetComponent<Image>().color = new Color(0.5f, 0, 0, 0.8f);
+        }
         if (resultText != null)
         {
             if (GameManager.Instance != null)
@@ -50,5 +73,13 @@ public class MinigameManager : MonoBehaviour
                 resultText.text = "STATEK ZNISZCZONY!\n\nWciœnij ENTER aby wróciæ do salonu.";
             }
         }
+    }
+    public void TriggerWin()
+    {
+        isGameOver = true;
+
+        gameOverPanel.SetActive(true);
+        gameOverPanel.GetComponent<Image>().color = new Color(0, 0.5f, 0, 0.8f);
+        resultText.text = $"ZWYCIÊSTWO!\nOczyœci³eœ sektor!\nBilety: {GameManager.Instance.currentTickets}\n\nWciœnij [ENTER] aby wróciæ.";
     }
 }

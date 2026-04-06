@@ -4,6 +4,10 @@ using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Endgame UI")]
+    public GameObject endgamePanel;
+    public TextMeshProUGUI endgameText;
+
     [Header("Referencje UI")]
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI ticketsText;
@@ -22,6 +26,9 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnResourceChanged += UpdateUI;
         GameManager.Instance.OnGameMessage += ShowMessage;
 
+        GameManager.Instance.OnGameOver += ShowEndgameScreen;
+        if (endgamePanel != null) endgamePanel.SetActive(false);
+
         UpdateUI();
         HideInteractionPrompt();
     }
@@ -32,6 +39,8 @@ public class UIManager : MonoBehaviour
         {
             GameManager.Instance.OnResourceChanged -= UpdateUI;
             GameManager.Instance.OnGameMessage -= ShowMessage;
+
+            GameManager.Instance.OnGameOver -= ShowEndgameScreen;
         }
     }
 
@@ -79,4 +88,39 @@ public class UIManager : MonoBehaviour
     {
         interactionPromptText.gameObject.SetActive(false);
     }
+    public void ClearMessage()
+    {
+        if (messageText != null)
+        {
+            messageText.text = "";
+        }
+        if (messageCoroutine != null)
+        {
+            StopCoroutine(messageCoroutine);
+        }
+    }
+    private void ShowEndgameScreen(bool isWin)
+    {
+        if (endgamePanel == null || endgameText == null) return;
+
+        endgamePanel.SetActive(true);
+
+        if (isWin)
+        {
+            endgameText.text = "GRATULACJE!\nUzbiera³eœ bilety i kupi³eœ wymarzon¹ konsolê!";
+            endgameText.color = Color.green;
+        }
+        else
+        {
+            endgameText.text = "KONIEC LATA...\nNiestety, zabrak³o Ci biletów na konsolê.";
+            endgameText.color = Color.red;
+        }
+    }
+
+    // Funkcja dla przycisku Restart (aby mo¿na by³o go podpi¹æ w Unity)
+    public void OnRestartButtonClicked()
+    {
+        GameManager.Instance.RestartGame();
+    }
+
 }
