@@ -18,6 +18,9 @@ public class Asteroid : MonoBehaviour
     [Tooltip("Prefab mniejszej asteroidy. Zostaw puste dla Małej (size = 1).")]
     public GameObject smallerAsteroidPrefab;
 
+    [Header("Dźwięki")]
+    public AudioClip explosionSound;
+
     private Rigidbody2D rb;
 
     void Start()
@@ -69,6 +72,11 @@ public class Asteroid : MonoBehaviour
                
                     Debug.LogWarning($"UWAGA! Asteroida wielkości {size} nie ma przypisanego prefabu w polu 'Smaller Asteroid Prefab'!");
                 }
+            }
+
+            if (explosionSound != null)
+            {
+                AudioSource.PlayClipAtPoint(explosionSound, transform.position);
             }
 
             if (MinigameManager.Instance != null)

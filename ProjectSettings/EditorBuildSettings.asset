@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SpaceShooter.unity
     guid: 518c6f1fba773f743a8951b443986daf
+  - enabled: 1
+    path: Assets/Frogger/Scenes/Frogger.unity
+    guid: 764ab337491284149b1f366f1fe44daa
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

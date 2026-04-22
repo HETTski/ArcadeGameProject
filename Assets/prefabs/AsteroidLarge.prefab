@@ -220,3 +220,4 @@ MonoBehaviour:
   ticketValue: 5
   speed: 1.5
   smallerAsteroidPrefab: {fileID: 9130634648475024730, guid: fcea89d920dea464f8d4aa64123a8069, type: 3}
+  explosionSound: {fileID: 8300000, guid: c2153dcd0edd22f40bdebf613271bae7, type: 3}

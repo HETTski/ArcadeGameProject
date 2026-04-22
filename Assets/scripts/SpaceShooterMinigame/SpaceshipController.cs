@@ -19,6 +19,8 @@ public class SpaceshipController : MonoBehaviour
     [Tooltip("dziób statku")]
     public Transform firePoint;
 
+    [Header("Dźwięki")]
+    public AudioClip shootSound;
 
 
     private Rigidbody2D rb;
@@ -61,6 +63,13 @@ public class SpaceshipController : MonoBehaviour
 
         Rigidbody2D laserRb = laser.GetComponent<Rigidbody2D>();
         laserRb.linearVelocity = transform.up * laserSpeed;
+
+        
+        if (shootSound != null)
+        {
+            
+            AudioSource.PlayClipAtPoint(shootSound, transform.position);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
