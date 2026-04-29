@@ -2,8 +2,14 @@ using UnityEngine;
 
 public class ShopCounter : MonoBehaviour, IInteractable
 {
+
+     [Header("Dźwięki")]
+    public AudioClip shopSound;
+
     public void Interact()
     {
+        AudioSource.PlayClipAtPoint(shopSound, transform.position);
+        
         if (GameManager.Instance.currentTickets >= GameManager.Instance.consoleCost)
         {
             // Odpalamy zwycięstwo!

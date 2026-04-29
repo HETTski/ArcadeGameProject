@@ -7,8 +7,14 @@ public class HubMachine : MonoBehaviour, IInteractable
     public int playCost = 2;
     public string sceneToLoad = "Minigame_SpaceInvaders"; // Nazwa sceny, którą chcemy wczyta�
 
+    [Header("Dźwięki")]
+    public AudioClip machineSound;
+
     public void Interact()
     {
+
+        AudioSource.PlayClipAtPoint(machineSound, transform.position);
+
         if (GameManager.Instance.currentMoney >= playCost)
         {
             GameManager.Instance.SpendMoney(playCost);
