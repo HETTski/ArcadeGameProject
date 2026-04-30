@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Frogger/Scenes/Frogger.unity
     guid: 764ab337491284149b1f366f1fe44daa
+  - enabled: 1
+    path: Assets/Scenes/Minigame_Gorillaz.unity
+    guid: 7b2a68071fb366cebafbcf5de1c613a5
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
