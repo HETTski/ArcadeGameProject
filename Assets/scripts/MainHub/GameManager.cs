@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject hubPlayer; 
     public GameObject hubUI;     
     public GameObject endgamePanel;
+    public UnityEngine.UI.Image fadeImage;
 
     [Header("Ekonomia")]
     public int currentMoney;
@@ -43,9 +44,19 @@ public class GameManager : MonoBehaviour
 
     private System.Collections.IEnumerator Start()
     {
-        yield return null;
+       yield return null;
 
-        StartNewWeekend();
+        // Sprawdzamy flagƒô przekazanƒÖ z Menu G≈Ç√≥wnego
+        if (PlayerPrefs.GetInt("LoadGameFlag", 0) == 1)
+        {
+            LoadGame(); // ≈Åadujemy zapis!
+            // Resetujemy flagƒô, by nie ≈Çadowa≈Ço zapisu przy ewentualnym restarcie
+            PlayerPrefs.SetInt("LoadGameFlag", 0); 
+        }
+        else
+        {
+            StartNewWeekend(); // Zaczynamy od zera
+        }
     }
 
     public void StartNewWeekend()
@@ -93,14 +104,14 @@ public class GameManager : MonoBehaviour
 
         isGameOver = true;
 
-        // Odpalamy event, ktÛrego s≥ucha UIManager
+        // Odpalamy event, ktÔøΩrego sÔøΩucha UIManager
         OnGameOver?.Invoke(isWin);
     }
     public void RestartGame()
     {
 
-        // 1. Resetujemy wartoúci do poczπtkowych
-        currentMoney = 20; // Wpisz tu swojπ kwotÍ startowπ
+        // 1. Resetujemy wartoÔøΩci do poczÔøΩtkowych
+        currentMoney = 20; // Wpisz tu swojÔøΩ kwotÔøΩ startowÔøΩ
         currentTickets = 0;
         currentWeekend = 1;
         isGameOver = false;
@@ -110,8 +121,8 @@ public class GameManager : MonoBehaviour
 
         endgamePanel.SetActive(false);
 
-        // 3. £adujemy od nowa Hub
-        SceneManager.LoadScene("MainHub");
+        // 3. ÔøΩadujemy od nowa Hub
+       LoadSceneWithFade("MainHub");
     }
     // Publiczna funkcja, kt√≥rej inne skrypty mog≈Ç u≈ºywaƒá do wysy≈Çania tekstu na ekran
     public void BroadcastMessage(string msg)
@@ -123,13 +134,13 @@ public class GameManager : MonoBehaviour
     {
         if (scene.name == "MainHub")
         {
-            // W≥πczamy gracza (jeúli istnieje)
+            // WÔøΩÔøΩczamy gracza (jeÔøΩli istnieje)
             if (hubPlayer != null)
             {
                 hubPlayer.SetActive(true);
             }
 
-            // W≥πczamy UI i od razu czyúcimy wiadomoúci (w jednym bloku if!)
+            // WÔøΩÔøΩczamy UI i od razu czyÔøΩcimy wiadomoÔøΩci (w jednym bloku if!)
             if (hubUI != null)
             {
                 hubUI.SetActive(true);
@@ -138,7 +149,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // Wy≥πczamy gracza i UI w minigrach
+            // WyÔøΩÔøΩczamy gracza i UI w minigrach
             if (hubPlayer != null) hubPlayer.SetActive(false);
             if (hubUI != null) hubUI.SetActive(false);
         }
@@ -148,5 +159,75 @@ public class GameManager : MonoBehaviour
     {
         
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    public void SaveGame()
+    {
+        PlayerPrefs.SetInt("Money", currentMoney);
+        PlayerPrefs.SetInt("Tickets", currentTickets);
+        PlayerPrefs.SetInt("Weekend", currentWeekend);
+        PlayerPrefs.Save(); // Wymuszenie zapisu na dysk
+        
+        BroadcastMessage("Gra zosta≈Ça zapisana!");
+    }
+
+    public void LoadGame()
+    {
+        // Sprawdzamy, czy istnieje w og√≥le jaki≈õ zapis
+        if (PlayerPrefs.HasKey("Weekend"))
+        {
+            currentMoney = PlayerPrefs.GetInt("Money");
+            currentTickets = PlayerPrefs.GetInt("Tickets");
+            currentWeekend = PlayerPrefs.GetInt("Weekend");
+            
+            OnResourceChanged?.Invoke(); // Aktualizacja UI
+            BroadcastMessage("Gra wczytana pomy≈õlnie.");
+        }
+        else
+        {
+            BroadcastMessage("Brak zapisanego stanu gry.");
+        }
+    }
+    // Funkcja wywo≈Çywana zamiast bezpo≈õredniego SceneManager.LoadScene()
+    public void LoadSceneWithFade(string sceneName)
+    {
+        StartCoroutine(FadeAndLoad(sceneName));
+    }
+
+    private System.Collections.IEnumerator FadeAndLoad(string sceneName)
+    {
+        if (fadeImage != null)
+        {
+            // 1. W≈ÇƒÖczamy obraz i blokujemy interakcje myszkƒÖ na czas ≈Çadowania
+            fadeImage.gameObject.SetActive(true);
+            fadeImage.raycastTarget = true; 
+
+            // ≈öciemnianie (Fade Out)
+            float alpha = 0;
+            while (alpha < 1f)
+            {
+                alpha += Time.deltaTime * 2f; 
+                fadeImage.color = new Color(0, 0, 0, alpha);
+                yield return null;
+            }
+        }
+
+        // ≈Åadowanie sceny, gdy ekran jest w 100% czarny
+        SceneManager.LoadScene(sceneName);
+
+        if (fadeImage != null)
+        {
+            // Rozja≈õnianie (Fade In)
+            float alpha = 1f;
+            while (alpha > 0f)
+            {
+                alpha -= Time.deltaTime * 2f;
+                fadeImage.color = new Color(0, 0, 0, alpha);
+                yield return null;
+            }
+
+            // 2. Odblokowujemy interakcje i chowamy czarny ekran, ≈ºeby nie wisia≈Ç w tle
+            fadeImage.raycastTarget = false;
+            fadeImage.gameObject.SetActive(false);
+        }
     }
 }

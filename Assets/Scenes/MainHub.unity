@@ -612,6 +612,7 @@ MonoBehaviour:
   hubPlayer: {fileID: 1938363154}
   hubUI: {fileID: 1948294880}
   endgamePanel: {fileID: 1728307073}
+  fadeImage: {fileID: 902509647}
   currentMoney: 4900
   currentTickets: 0
   allowancePerWeekend: 20
@@ -919,8 +920,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HubMachine
   machineName: Frogger
-  playCost: 2
+  playCost: 5
   sceneToLoad: Frogger/Scenes/Frogger
+  requiredWeekend: 1
   machineSound: {fileID: 8300000, guid: 620ed6b566a7d6376acdf76f0fa10cfb, type: 3}
 --- !u!61 &640714780
 BoxCollider2D:
@@ -1042,6 +1044,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &902509645
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 902509646}
+  - component: {fileID: 902509648}
+  - component: {fileID: 902509647}
+  m_Layer: 5
+  m_Name: FadeImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &902509646
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902509645}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1948294884}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -9.224, y: -12.269}
+  m_SizeDelta: {x: 2260.269, y: 1249.857}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &902509647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902509645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &902509648
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902509645}
+  m_CullTransparentMesh: 1
 --- !u!1 &1072384897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,8 +1288,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HubMachine
   machineName: Gorillaz
-  playCost: 2
+  playCost: 10
   sceneToLoad: Minigame_Gorillaz
+  requiredWeekend: 4
   machineSound: {fileID: 8300000, guid: 620ed6b566a7d6376acdf76f0fa10cfb, type: 3}
 --- !u!61 &1090228213
 BoxCollider2D:
@@ -2203,6 +2281,7 @@ MonoBehaviour:
   machineName: Space Invaders
   playCost: 2
   sceneToLoad: SpaceShooter
+  requiredWeekend: 1
   machineSound: {fileID: 8300000, guid: 620ed6b566a7d6376acdf76f0fa10cfb, type: 3}
 --- !u!1 &1728307073
 GameObject:
@@ -2706,6 +2785,7 @@ RectTransform:
   - {fileID: 1072384898}
   - {fileID: 1400622118}
   - {fileID: 1728307074}
+  - {fileID: 902509646}
   m_Father: {fileID: 220172480}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
