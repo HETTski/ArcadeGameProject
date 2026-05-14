@@ -19,9 +19,9 @@ TagManager:
   - Ground
   - Player
   - Climbing
-  - 
-  - 
-  - 
+  - Platform
+  - Obstacle
+  - Barrier
   - 
   - 
   - 

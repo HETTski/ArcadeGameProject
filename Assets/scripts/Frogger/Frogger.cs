@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 
@@ -45,50 +45,51 @@ namespace Frogger{
         }
     }
 
-    private void Move(Vector3 direction)
+ private void Move(Vector3 direction)
     {
         if (cooldown) return;
 
         Vector3 destination = transform.position + direction;
 
-        // Check for collision at the destination
-        Collider2D platform = Physics2D.OverlapBox(destination, Vector2.zero, 0f, LayerMask.GetMask("Platform"));
-        Collider2D obstacle = Physics2D.OverlapBox(destination, Vector2.zero, 0f, LayerMask.GetMask("Obstacle"));
-        Collider2D barrier = Physics2D.OverlapBox(destination, Vector2.zero, 0f, LayerMask.GetMask("Barrier"));
+        // POPRAWKA: Tworzymy pole sprawdzające kolizję, które jest nieco mniejsze niż 1 jednostka siatki
+        Vector2 checkSize = new Vector2(0.5f, 0.5f); 
 
-        // Prevent any movement if there is a barrier
+        // Sprawdzamy co znajduje się w miejscu, w które chcemy skoczyć
+        Collider2D platform = Physics2D.OverlapBox(destination, checkSize, 0f, LayerMask.GetMask("Platform"));
+        Collider2D obstacle = Physics2D.OverlapBox(destination, checkSize, 0f, LayerMask.GetMask("Obstacle"));
+        Collider2D barrier = Physics2D.OverlapBox(destination, checkSize, 0f, LayerMask.GetMask("Barrier"));
+
+        // Blokada ruchu (ściana ekranu)
         if (barrier != null) {
             return;
         }
 
-        // Attach/detach frogger from the platform
+        // Dołącz/Odłącz od platformy (kłody/żółwia)
         if (platform != null) {
             transform.SetParent(platform.transform);
         } else {
             transform.SetParent(null);
         }
 
-        // Frogger dies when it hits an obstacle
+        // Śmierć po wejściu prosto pod auto
         if (obstacle != null && platform == null)
         {
             transform.position = destination;
             Death();
         }
-        // Conditions pass, move to the destination
         else
         {
-            // Check if we have advanced to a farther row
             if (destination.y > farthestRow)
             {
                 farthestRow = destination.y;
                 GameManager.Instance.AdvancedRow();
             }
 
-            // Start leap animation
             StopAllCoroutines();
             StartCoroutine(Leap(destination));
         }
     }
+
 
     private IEnumerator Leap(Vector3 destination)
     {
@@ -152,6 +153,8 @@ namespace Frogger{
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Żaba dotknęła: " + other.gameObject.name + " na warstwie: " + LayerMask.LayerToName(other.gameObject.layer));
+
         bool hitObstacle = other.gameObject.layer == LayerMask.NameToLayer("Obstacle");
         bool onPlatform = transform.parent != null;
 
