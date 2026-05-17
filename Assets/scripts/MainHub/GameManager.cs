@@ -71,11 +71,6 @@ public class GameManager : MonoBehaviour
         currentMoney -= amount;
         OnResourceChanged?.Invoke();
 
-        // Jeśli skończyły nam się pieniądze na zero, automatycznie kończymy weekend
-        if (currentMoney <= 0)
-        {
-            EndWeekend();
-        }
     }
 
     public void AddTickets(int amount)
