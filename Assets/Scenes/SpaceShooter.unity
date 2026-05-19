@@ -952,6 +952,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 436015206587767742, guid: d9bbd8ce2355dfacfbdab28173294343, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c876ab605503d0843931cb3e45287b45, type: 2}
+    - target: {fileID: 436015206587767742, guid: d9bbd8ce2355dfacfbdab28173294343, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5924947995983553094, guid: d9bbd8ce2355dfacfbdab28173294343, type: 3}
       propertyPath: m_Name
       value: Canvas
