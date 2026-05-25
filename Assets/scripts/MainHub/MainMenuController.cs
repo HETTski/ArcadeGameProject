@@ -3,6 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
+    private void Start()
+    {
+        // Jeśli budujemy grę na WebGL, ukrywamy przycisk wyjścia, bo w przeglądarce jest zbędny
+        #if UNITY_WEBGL
+            if (quitButton != null)
+            {
+                quitButton.SetActive(false);
+            }
+        #endif
+    }
+
     public void StartNewGame()
     {
         // Ustawiamy flagę "0", co oznacza, że zaczynamy od zera
