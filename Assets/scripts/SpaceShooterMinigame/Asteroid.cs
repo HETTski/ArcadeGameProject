@@ -23,16 +23,21 @@ public class Asteroid : MonoBehaviour
 
     private Rigidbody2D rb;
 
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
+    private bool isDestroyed = false;
 
+    private void Awake()
+    {
         if (MinigameManager.Instance != null)
         {
             MinigameManager.Instance.RegisterAsteroid();
         }
+    }
 
-        // Losujemy kierunek i siłę obrotu na samym starcie
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+
+
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
         rb.linearVelocity = randomDirection * speed;
         rb.angularVelocity = Random.Range(-100f, 100f);
@@ -41,11 +46,16 @@ public class Asteroid : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
 
-        // Debug.Log($"Asteroida dotknęła obiektu: {other.gameObject.name} z tagiem: {other.tag}");
+        if (isDestroyed) return;
 
         if (other.CompareTag("Laser"))
         {
-            // 1. Niszczymy pocisk gracza
+            isDestroyed = true; // Zaznaczamy, że skała dostała
+
+            // NATYCHMIASTOWE ROZBROJENIE LASERA: 
+            // Wyłączamy kolider, żeby nie uderzył "na wylot" w nowo zespawnowane skały!
+            other.GetComponent<Collider2D>().enabled = false;
+            other.gameObject.SetActive(false);
             Destroy(other.gameObject);
 
             // Przyznawanie biletów
@@ -53,32 +63,24 @@ public class Asteroid : MonoBehaviour
             {
                 GameManager.Instance.AddTickets(ticketValue);
             }
-            else
-            {
-                Debug.Log($"Zdobywasz +{ticketValue} biletów! (Test bez huba)");
-            }
 
             // Rozpad na dwie mniejsze asteroidy
             if (size > 1)
             {
                 if (smallerAsteroidPrefab != null)
                 {
-                    // Każda nowo stworzona asteroida sama wylosuje swój kierunek lotu w swoim Start()
                     Instantiate(smallerAsteroidPrefab, transform.position, Quaternion.identity);
                     Instantiate(smallerAsteroidPrefab, transform.position, Quaternion.identity);
-                }
-                else
-                {
-               
-                    Debug.LogWarning($"UWAGA! Asteroida wielkości {size} nie ma przypisanego prefabu w polu 'Smaller Asteroid Prefab'!");
                 }
             }
 
+            // Dźwięk wybuchu
             if (explosionSound != null)
             {
                 AudioSource.PlayClipAtPoint(explosionSound, transform.position);
             }
 
+            // Usunięcie ze spisu skał
             if (MinigameManager.Instance != null)
             {
                 MinigameManager.Instance.UnregisterAsteroid();
@@ -87,4 +89,5 @@ public class Asteroid : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
 }
